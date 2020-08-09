@@ -13,7 +13,7 @@ export class TodosAccess {
     private readonly todosTable = process.env.TODOS_TABLE) {
   }
 
-  async getAllGroups(): Promise<TodoItem[]> {
+  async getAllTodos(): Promise<TodoItem[]> {
     console.log('Getting all groups')
 
     const result = await this.docClient.scan({
