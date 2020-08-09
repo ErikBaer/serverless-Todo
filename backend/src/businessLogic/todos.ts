@@ -5,10 +5,10 @@ import { TodosAccess } from '../dataLayer/TodosAccess'
 import { CreateTodoRequest } from '../requests/CreateTodoRequest'
 import { getUserId } from '../auth/utils'
 
-const TodosAccess = new TodoAccess()
+const todosAccess = new TodosAccess()
 
 export async function getAllTodos(): Promise<TodoItem[]> {
-  return TodosAccess.getAllTodos()
+  return todosAccess.getAllTodos()
 }
 
 export async function createTodo(
@@ -19,11 +19,13 @@ export async function createTodo(
   const itemId = uuid.v4()
   const userId = getUserId(jwtToken)
 
-  return await TodosAccess.createTodo({
-    id: itemId,
+  return await todosAccess.createTodo({
+    todoId: itemId,
     userId: userId,
     name: createTodoRequest.name,
-    description: createTodoRequest.dueDate,
-    timestamp: new Date().toISOString()
+    dueDate: createTodoRequest.dueDate,
+    createdAt: new Date().toISOString(),
+    done: false,
+    attachmentUrl: ''
   })
 }
