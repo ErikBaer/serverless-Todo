@@ -28,6 +28,7 @@ functions:
           method: get
           path: todos
 
+
   # TODO: Configure this function
   GetTodos:
   CreateTodo:
@@ -36,6 +37,11 @@ functions:
       - http:
           method: post
           path: todos
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
   # TODO: Configure this function
   UpdateTodo:
@@ -87,31 +93,6 @@ resources:
           - AttributeName: id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
-        TableName: ${self:provider.environment.GROUPS_TABLE}
+        TableName: ${self:provider.environment.TODOS_TABLE}
 
-    ImagesDynamoDBTable:
-      Type: "AWS::DynamoDB::Table"
-      Properties:
-        AttributeDefinitions:
-          - AttributeName: groupId
-            AttributeType: S
-          - AttributeName: timestamp
-            AttributeType: S
-          - AttributeName: imageId
-            AttributeType: S
-        KeySchema:
-          - AttributeName: groupId
-            KeyType: HASH
-          - AttributeName: timestamp
-            KeyType: RANGE
-        BillingMode: PAY_PER_REQUEST
-        StreamSpecification:
-          StreamViewType: NEW_IMAGE
-        TableName: ${self:provider.environment.IMAGES_TABLE}
-        GlobalSecondaryIndexes:
-          - IndexName: ${self:provider.environment.IMAGE_ID_INDEX}
-            KeySchema:
-            - AttributeName: imageId
-              KeyType: HASH
-            Projection:
-              ProjectionType: ALL
+    
