@@ -1,4 +1,7 @@
 import * as AWS  from 'aws-sdk'
+const _X_AMZN_TRACE_ID = 5143
+process.env._X_AMZN_TRACE_ID = _X_AMZN_TRACE_ID
+
 import * as AWSXRay from 'aws-xray-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 
@@ -14,7 +17,7 @@ export class TodosAccess {
   }
 
   async getAllTodos(): Promise<TodoItem[]> {
-    console.log('Getting all groups')
+    console.log('Getting all Todos')
 
     const result = await this.docClient.scan({
       TableName: this.todosTable
