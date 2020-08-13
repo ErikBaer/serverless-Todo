@@ -17,7 +17,8 @@ export async function createTodo(
 ): Promise<TodoItem> {
 
   const itemId = uuid.v4()
-  const userId = parseUserId(jwtToken)
+  // const userId = parseUserId(jwtToken)
+  const userId = uuid.v4()
 
   return await todosAccess.createTodo({
     todoId: itemId,

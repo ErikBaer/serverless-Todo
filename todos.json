@@ -1,14 +1,14 @@
-{
+[
    
-     "1":  {
+{
     "name": "Do this Now!",
     "dueDate": "Today"
 },
-"2": {
+{
     "name": "Do this Then!",
     "dueDate": "Tomorrow"
 },
-"3": {
+{
     "name": "Do this Later!",
     "dueDate": "Sunday"
-}}
+}]
