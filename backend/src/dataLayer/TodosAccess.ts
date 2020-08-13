@@ -90,6 +90,25 @@ export class TodosAccess {
 return 
 }
 
+  async deleteTodo (todoId: string, userId) {
+    
+    const params = {
+      TableName : this.todosTable,
+      Key:                  
+      {todoId,
+      userId},
+    }
+    
+    
+    this.docClient.delete(params, function(err, data) {
+      if (err) {
+          console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
+      } else {
+          console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+      }
+  });
+  
+  }
 
 
   getUploadUrl(todoId: string) {

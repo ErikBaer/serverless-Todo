@@ -54,6 +54,15 @@ userId, todoId)
   }
 
 
+export async function deleteTodo(
+  todoId: string, jwtToken: string
+) {
+  // const userId = parseUserId(jwtToken)
+  const userId = '1234'
+
+  return await todosAccess.deleteTodo(todoId, userId)
+}
+
 
 export function getUploadUrl(todoId) {
   
