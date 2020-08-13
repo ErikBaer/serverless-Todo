@@ -19,6 +19,8 @@ export async function createTodo(
   const itemId = uuid.v4()
   // const userId = parseUserId(jwtToken)
   const userId = uuid.v4()
+  const attachmentUrl =createTodoRequest.attachmentUrl || ''
+  
 
   return await todosAccess.createTodo({
     todoId: itemId,
@@ -27,6 +29,6 @@ export async function createTodo(
     dueDate: createTodoRequest.dueDate,
     createdAt: new Date().toISOString(),
     done: false,
-    attachmentUrl: ''
+    attachmentUrl: attachmentUrl
   })
 }
