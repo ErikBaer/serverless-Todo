@@ -6,6 +6,10 @@ import * as AWSXRay from 'aws-xray-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 
 const XAWS = AWSXRay.captureAWS(AWS)
+const s3 = new XAWS.S3({
+  signatureVersion: 'v4'
+})
+
 
 import { TodoItem } from '../models/TodoItem'
 
@@ -35,6 +39,19 @@ export class TodosAccess {
 
     return todo
   }
+
+  getUploadUrl(todoId: string) {
+    const bucketName = process.env.ATTACHMENTS_S3_BUCKET
+    const urlExpiration = process.env.urlExpiration
+  
+    const signedUrl = s3.getSignedUrl('putObject', {
+      Bucket: bucketName,
+      Key: todoId,
+      Expires: urlExpiration
+    })
+    
+    return signedUrl
+  }
 }
 
 function createDynamoDBClient() {
@@ -48,3 +65,4 @@ function createDynamoDBClient() {
 
   return new XAWS.DynamoDB.DocumentClient()
 }
+

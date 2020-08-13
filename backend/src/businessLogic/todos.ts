@@ -5,6 +5,7 @@ import { TodosAccess } from '../dataLayer/TodosAccess'
 import { CreateTodoRequest } from '../requests/CreateTodoRequest'
 import { parseUserId } from '../auth/utils'
 
+
 const todosAccess = new TodosAccess()
 
 export async function getAllTodos(): Promise<TodoItem[]> {
@@ -31,4 +32,14 @@ export async function createTodo(
     done: false,
     attachmentUrl: attachmentUrl
   })
+}
+
+export function getUploadUrl(todoId) {
+  
+  const signedUrl = todosAccess.getUploadUrl(todoId)
+  
+  return signedUrl
+
+ 
+
 }
