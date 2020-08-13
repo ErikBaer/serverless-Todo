@@ -1,9 +1,10 @@
 import * as AWS  from 'aws-sdk'
 const _X_AMZN_TRACE_ID = 5143
-process.env._X_AMZN_TRACE_ID = _X_AMZN_TRACE_ID
+process.env._X_AMZN_TRACE_ID = '_X_AMZN_TRACE_ID'
 
 import * as AWSXRay from 'aws-xray-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
+import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 
 const XAWS = AWSXRay.captureAWS(AWS)
 const s3 = new XAWS.S3({
@@ -39,6 +40,51 @@ export class TodosAccess {
 
     return todo
   }
+
+  async updateTodo(update: UpdateTodoRequest, userId: string, todoId: string ): Promise<String> {
+
+    const {name,dueDate,done} = update
+    
+    const params = {
+      TableName: this.todosTable,
+      Key:                  
+        {todoId,
+        userId},
+        
+      
+      UpdateExpression: "set #name=:n, #dueDate=:dD, #done=:d",
+      
+      ExpressionAttributeValues : {
+        ':n': name,
+        ':dD': dueDate,
+        ':d': done
+      }
+      
+      
+      ,
+      ExpressionAttributeNames:{
+        '#name': 'name',
+        '#dueDate': 'dueDate',
+        '#done': 'done'
+      },
+      ReturnValues:"UPDATED_NEW"
+  
+  };
+
+  console.log("Updating the item...");
+
+  await this.docClient.update(params, function(err, data) {
+    if (err) {
+        console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
+    } else {
+        console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
+    }
+}).promise();
+
+return 
+}
+
+
 
   getUploadUrl(todoId: string) {
     const bucketName = process.env.ATTACHMENTS_S3_BUCKET

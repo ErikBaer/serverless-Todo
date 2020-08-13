@@ -4,6 +4,7 @@ import { TodoItem } from '../models/TodoItem'
 import { TodosAccess } from '../dataLayer/TodosAccess'
 import { CreateTodoRequest } from '../requests/CreateTodoRequest'
 import { parseUserId } from '../auth/utils'
+import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 
 
 const todosAccess = new TodosAccess()
@@ -19,7 +20,7 @@ export async function createTodo(
 
   const itemId = uuid.v4()
   // const userId = parseUserId(jwtToken)
-  const userId = uuid.v4()
+  const userId = '1234'
   const attachmentUrl =createTodoRequest.attachmentUrl || ''
   
 
@@ -34,12 +35,28 @@ export async function createTodo(
   })
 }
 
+export async function updateTodo(
+  updateTodoRequest: UpdateTodoRequest,
+  todoId: string, jwtToken:string) {
+  // const userId = parseUserId(jwtToken)
+  const userId = '1234'
+
+
+return await todosAccess.updateTodo({
+  name: updateTodoRequest.name,
+  dueDate: updateTodoRequest.dueDate,
+  done: updateTodoRequest.done
+},
+userId, todoId)
+
+  }
+
+
+
 export function getUploadUrl(todoId) {
   
   const signedUrl = todosAccess.getUploadUrl(todoId)
   
   return signedUrl
-
- 
 
 }
