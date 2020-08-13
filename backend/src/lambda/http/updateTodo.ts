@@ -14,7 +14,7 @@ console.log("updatedTodo", updatedTodo)
   const split = authorization.split(' ')
   const jwtToken = split[1]
 
-  const newItem = await updateTodo(updatedTodo, todoId, jwtToken)
+  await updateTodo(updatedTodo, todoId, jwtToken)
   // TODO: Update a TODO item with the provided id using values in the "updatedTodo" object
 
 

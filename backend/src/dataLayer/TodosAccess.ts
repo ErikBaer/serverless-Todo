@@ -1,5 +1,5 @@
 import * as AWS  from 'aws-sdk'
-const _X_AMZN_TRACE_ID = 5143
+const _X_AMZN_TRACE_ID = '5143'
 process.env._X_AMZN_TRACE_ID = '_X_AMZN_TRACE_ID'
 
 import * as AWSXRay from 'aws-xray-sdk'
