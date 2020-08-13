@@ -9,8 +9,10 @@ import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 
 const todosAccess = new TodosAccess()
 
-export async function getAllTodos(): Promise<TodoItem[]> {
-  return todosAccess.getAllTodos()
+export async function getAllTodos(jwtToken): Promise<TodoItem[]> {
+  // const userId = parseUserId(jwtToken)
+  const userId = '1234'
+  return todosAccess.getAllTodos(userId)
 }
 
 export async function createTodo(
