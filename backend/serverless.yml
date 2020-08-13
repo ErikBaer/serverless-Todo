@@ -19,6 +19,7 @@ provider:
     TODOS_TABLE: TODOS-${self:provider.stage}
     ATTACHMENTS_S3_BUCKET: sls-udagram-baer-ATTACHMENTS-${self:provider.stage}
     urlExpiration: 3600
+    INDEX_NAME: CREATED_INDEX
 
 
 custom:
@@ -114,6 +115,8 @@ resources:
             AttributeType: S
           - AttributeName: todoId
             AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: S
           
         KeySchema:
           - AttributeName: userId
@@ -122,6 +125,15 @@ resources:
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.TODOS_TABLE}
+        LocalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.INDEX_NAME}
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH
+              - AttributeName: createdAt
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
 
     AttachmentsBucket:
       Type: AWS::S3::Bucket
