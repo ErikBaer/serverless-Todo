@@ -70,7 +70,7 @@ functions:
     iamRoleStatements:
       - Effect: Allow
         Action:
-          - dynamodb:Put
+          - dynamodb:PutItem
         Resource: "*"
     
 
@@ -86,7 +86,7 @@ functions:
     iamRoleStatements:
       - Effect: Allow
         Action:
-          - dynamodb:Update
+          - dynamodb:UpdateItem
         Resource: "*"
   # TODO: Configure this function
   DeleteTodo:
@@ -100,7 +100,7 @@ functions:
     iamRoleStatements:
       - Effect: Allow
         Action:
-          - dynamodb:Delete
+          - dynamodb:DeleteItem
         Resource: "*"
 
   # TODO: Configure this function
@@ -112,11 +112,7 @@ functions:
           path: todos/{todoId}/attachment
           cors: true
           authorizer: Auth
-    iamRoleStatements:
-      - Effect: Allow
-        Action:
-          - dynamodb:Query
-        Resource: "*"
+
 
   
 
