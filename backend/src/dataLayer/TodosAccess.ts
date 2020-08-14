@@ -51,10 +51,7 @@ export class TodosAccess {
       Item: todo
     }).promise()
 
-    logger.info('Todo was succesfully created', {
-      // Additional information stored with a log statement
-      userId
-    })
+    logger.info('Todo was succesfully created')
     return todo
   }
 
@@ -93,7 +90,7 @@ export class TodosAccess {
     userId
   })
 
-  await this.docClient.update(params, function(err, data) {
+  await this.docClient.update(params, function(err) {
     if (err) {
       logger.info("Unable to update item. ", {message: err.message});
     } else {
@@ -114,7 +111,7 @@ return
     }
     
     
-    await this.docClient.delete(params, function(err, data) {
+    await this.docClient.delete(params, function(err) {
       if (err) {
         logger.info("Unable to delete item. ", {todoId, userId, message: err.message});
       } else {
@@ -166,7 +163,7 @@ return
 
   logger.info("Updating the attachmentUrl...", {todoId, userId})
 
-  await this.docClient.update(params, function(err, data) {
+  await this.docClient.update(params, function(err) {
     if (err) {
       logger.info("Unable to update item", {todoId, userId, message: err.message});
     } else {
