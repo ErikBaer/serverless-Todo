@@ -42,6 +42,8 @@ custom:
 
 functions:
 
+ 
+
   Auth:
     handler: src/lambda/auth/auth0Authorizer.handler
 
@@ -65,6 +67,8 @@ functions:
       - http:
           method: post
           path: todos
+          cors: true
+          authorizer: Auth
     
 
   # TODO: Configure this function
