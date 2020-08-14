@@ -22,7 +22,7 @@ export async function createTodo(
   const todoId = uuid.v4()
   const userId = parseUserId(jwtToken)
   
-  const attachmentUrl =createTodoRequest.attachmentUrl || ''
+  const attachmentUrl = `https://${process.env.ATTACHMENTS_S3_BUCKET}.s3.amazonaws.com/${todoId}`
   
 
   return await todosAccess.createTodo({
@@ -69,4 +69,12 @@ export function getUploadUrl(todoId) {
   
   return signedUrl
 
+}
+
+export async function updateTodoUrl(todoId: string, jwtToken){
+  const userId = parseUserId(jwtToken)
+  return await todosAccess.updateTodoUrl(
+      userId,
+      todoId
+  )
 }
