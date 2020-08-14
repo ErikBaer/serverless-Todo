@@ -7,6 +7,9 @@ import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 
 const XAWS = AWSXRay.captureAWS(AWS)
 
+import { createLogger } from '../utils/logger'
+const logger = createLogger('dataLayer')
+
 
 import { TodoItem } from '../models/TodoItem'
 import { S3 } from 'aws-sdk'
@@ -35,6 +38,10 @@ export class TodosAccess {
       }).promise();
 
     const items = result.Items
+    logger.info('Todos where served', {
+      // Additional information stored with a log statement
+      userId
+    })
     return items as TodoItem[]
   }
 
@@ -44,6 +51,10 @@ export class TodosAccess {
       Item: todo
     }).promise()
 
+    logger.info('Todo was succesfully created', {
+      // Additional information stored with a log statement
+      userId
+    })
     return todo
   }
 
@@ -77,13 +88,16 @@ export class TodosAccess {
   
   };
 
-  console.log("Updating the item...");
+  logger.info('Item is getting updated ...', {
+    // Additional information stored with a log statement
+    userId
+  })
 
   await this.docClient.update(params, function(err, data) {
     if (err) {
-        console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
+      logger.info("Unable to update item. ", {message: err.message});
     } else {
-        console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
+      logger.info("UpdateItem succeeded:");
     }
 }).promise();
 
@@ -102,9 +116,9 @@ return
     
     await this.docClient.delete(params, function(err, data) {
       if (err) {
-          console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
+        logger.info("Unable to delete item. ", {todoId, userId, message: err.message});
       } else {
-          console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+        logger.info("DeleteItem succeeded:");
       }
   }).promise();
   
@@ -120,7 +134,7 @@ return
       Key: todoId,
       Expires: urlExpiration
     })
-    
+    logger.info("SignedUrl succefully created")
     return signedUrl
   }
 
@@ -150,13 +164,13 @@ return
   
   };
 
-  console.log("Updating the attachmentUrl...");
+  logger.info("Updating the attachmentUrl...", {todoId, userId})
 
   await this.docClient.update(params, function(err, data) {
     if (err) {
-        console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
+      logger.info("Unable to update item", {todoId, userId, message: err.message});
     } else {
-        console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
+      logger.info("UpdateItem succeeded:",{todoId, userId});
     }
 }).promise();
 
