@@ -18,7 +18,8 @@ const todos = await getAllTodos(jwtToken)
   return {
     statusCode: 200,
     headers: {
-      'access-Control-Allow-Origin': '*'
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true
     },
     body: JSON.stringify({
       items: todos

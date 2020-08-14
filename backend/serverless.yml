@@ -17,7 +17,7 @@ provider:
 
   environment:
     TODOS_TABLE: TODOS-${self:provider.stage}
-    ATTACHMENTS_S3_BUCKET: sls-udagram-baer-ATTACHMENTS-${self:provider.stage}
+    ATTACHMENTS_S3_BUCKET: sls-udagram-baer-attachments-${self:provider.stage}
     urlExpiration: 3600
     INDEX_NAME: CREATED_INDEX
 

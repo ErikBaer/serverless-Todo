@@ -6,19 +6,20 @@ import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 
 const XAWS = AWSXRay.captureAWS(AWS)
-const s3 = new XAWS.S3({
-  signatureVersion: 'v4'
-})
 
 
 import { TodoItem } from '../models/TodoItem'
+import { S3 } from 'aws-sdk'
 
 export class TodosAccess {
 
   constructor(
     private readonly docClient: DocumentClient = createDynamoDBClient(),
     private readonly todosTable = process.env.TODOS_TABLE,
-    private readonly indexName = process.env.INDEX_NAME) {
+    private readonly indexName = process.env.INDEX_NAME,
+    private readonly s3: S3 =  new XAWS.S3({
+      signatureVersion: 'v4'
+    })) {
   }
 
   async getAllTodos(userId): Promise<TodoItem[]> {
@@ -114,7 +115,7 @@ return
     const bucketName = process.env.ATTACHMENTS_S3_BUCKET
     const urlExpiration = process.env.urlExpiration
   
-    const signedUrl = s3.getSignedUrl('putObject', {
+    const signedUrl = this.s3.getSignedUrl('putObject', {
       Bucket: bucketName,
       Key: todoId,
       Expires: urlExpiration
