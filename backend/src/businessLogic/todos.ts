@@ -20,15 +20,15 @@ export async function createTodo(
   jwtToken: string
 ): Promise<TodoItem> {
 
-  const itemId = uuid.v4()
-  // const userId = parseUserId(jwtToken)
-  const userId = '1234'
+  const todoId = uuid.v4()
+  const userId = parseUserId(jwtToken)
+  
   const attachmentUrl =createTodoRequest.attachmentUrl || ''
   
 
   return await todosAccess.createTodo({
-    todoId: itemId,
-    userId: userId,
+    todoId,
+    userId,
     name: createTodoRequest.name,
     dueDate: createTodoRequest.dueDate,
     createdAt: new Date().toISOString(),
