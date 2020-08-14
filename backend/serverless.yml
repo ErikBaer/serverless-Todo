@@ -104,7 +104,7 @@ functions:
         Resource: "*"
 
   # TODO: Configure this function
-  GenerateUploadUrl:
+  UploadUrl:
     handler: src/lambda/http/generateUploadUrl.handler
     events:
       - http:
@@ -112,8 +112,13 @@ functions:
           path: todos/{todoId}/attachment
           cors: true
           authorizer: Auth
-
-
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - s3:PutObject
+          - s3:GetObject
+        Resource: arn:aws:s3:::${self:provider.environment.ATTACHMENTS_S3_BUCKET}/*
+      
   
 
 resources:
