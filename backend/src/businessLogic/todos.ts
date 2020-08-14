@@ -22,7 +22,7 @@ export async function createTodo(
   const todoId = uuid.v4()
   const userId = parseUserId(jwtToken)
   
-  const attachmentUrl = `https://${process.env.ATTACHMENTS_S3_BUCKET}.s3.amazonaws.com/${todoId}`
+  const attachmentUrl = ``
   
 
   return await todosAccess.createTodo({

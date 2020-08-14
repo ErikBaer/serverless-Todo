@@ -90,7 +90,7 @@ export class TodosAccess {
 return 
 }
 
-  async deleteTodo (todoId: string, userId) {
+  async deleteTodo (todoId: string, userId:string) {
     
     const params = {
       TableName : this.todosTable,
@@ -100,13 +100,13 @@ return
     }
     
     
-    this.docClient.delete(params, function(err, data) {
+    await this.docClient.delete(params, function(err, data) {
       if (err) {
           console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
       } else {
           console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
       }
-  });
+  }).promise();
   
   }
 
