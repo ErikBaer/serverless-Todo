@@ -4,10 +4,8 @@ service:
 plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
-  - serverless-dynamodb-local
-  - serverless-offline
-  - serverless-s3-local
-
+  - serverless-reqvalidator-plugin
+  - serverless-aws-documentation
 provider:
   name: aws
   runtime: nodejs10.x
@@ -24,9 +22,6 @@ provider:
 
 custom:
 
-
-  
-
   dynamodb:
     stages:
       - ${self:provider.stage}
@@ -34,7 +29,20 @@ custom:
       inMemory: true
       migrate: true 
 
-    
+  documentation:  
+    api:
+      info:
+        version: v1.0.0
+        title: ToDo API
+        description: Serverless application for storing tasks
+    models:
+      - name: CreateToDoRequest
+        contentType: application/json
+        schema: ${file(src/models/create-todo-request.json)}
+      - name: UpdateToDoRequest
+        contentType: application/json
+        schema: ${file(src/models/updateTodoRequest.json)}
+
 
 functions:
 
@@ -67,6 +75,12 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Create a new Todo Item
+            description: Create a new Todo Item
+            requestModels:
+              'application/json': CreateToDoRequest
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -83,6 +97,12 @@ functions:
           path: todos/{todoId}
           cors: true
           authorizer: Auth
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Create a new Todo Item
+            description: Create a new Todo Item
+            requestModels:
+              'application/json': UpdateToDoRequest
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -124,6 +144,15 @@ functions:
 resources:
   Resources:
     # TODO: Add any necessary AWS resources
+
+    RequestBodyValidator:
+      Type: AWS::ApiGateway::RequestValidator
+      Properties:
+        Name: 'request-body-validator'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: true
+        ValidateRequestParameters: false
 
     TodosDynamoDBTable:
       Type: AWS::DynamoDB::Table
