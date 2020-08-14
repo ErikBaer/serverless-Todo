@@ -4,9 +4,7 @@ service:
 plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
-  - serverless-dynamodb-local
-  - serverless-offline
-  - serverless-s3-local
+  - serverless-plugin-tracing
 
 provider:
   name: aws
@@ -21,6 +19,10 @@ provider:
     urlExpiration: 3600
     INDEX_NAME: CREATED_INDEX
 
+  tracing:
+    lambda: true
+    apiGateway: true
+
 
 custom:
 
@@ -34,7 +36,6 @@ custom:
       inMemory: true
       migrate: true 
 
-    
 
 functions:
 
