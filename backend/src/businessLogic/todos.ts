@@ -10,8 +10,7 @@ import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 const todosAccess = new TodosAccess()
 
 export async function getAllTodos(jwtToken): Promise<TodoItem[]> {
-  // const userId = parseUserId(jwtToken)
-  const userId = '1234'
+  const userId = parseUserId(jwtToken)
   return todosAccess.getAllTodos(userId)
 }
 
@@ -40,8 +39,8 @@ export async function createTodo(
 export async function updateTodo(
   updateTodoRequest: UpdateTodoRequest,
   todoId: string, jwtToken:string) {
-  // const userId = parseUserId(jwtToken)
-  const userId = '1234'
+  const userId = parseUserId(jwtToken)
+
 
 
 return await todosAccess.updateTodo({
@@ -57,8 +56,8 @@ userId, todoId)
 export async function deleteTodo(
   todoId: string, jwtToken: string
 ) {
-  // const userId = parseUserId(jwtToken)
-  const userId = '1234'
+  const userId = parseUserId(jwtToken)
+  
 
   return await todosAccess.deleteTodo(todoId, userId)
 }

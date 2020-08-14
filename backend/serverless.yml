@@ -12,7 +12,7 @@ provider:
   name: aws
   runtime: nodejs10.x
 
-  stage: ${opt:stage, 'dev'}
+  stage: ${opt:stage, 'staging'}
   region: ${opt:region, 'eu-central-1'}
 
   environment:
@@ -103,17 +103,7 @@ functions:
           cors: true
           authorizer: Auth
 
-  webhook:
-    handler: src/handler.webhook
-    events:
-      - http:
-          method: GET
-          path: /
-  s3hook:
-    handler: src/handler.s3hook
-    events:
-      - s3: local-bucket
-    event: s3:*
+  
 
 resources:
   Resources:
@@ -150,7 +140,7 @@ resources:
     AttachmentsBucket:
       Type: AWS::S3::Bucket
       Properties:
-        Bucketname: ${self:provider.environment.ATTACHMENTS_S3_BUCKET}
+        BucketName: ${self:provider.environment.ATTACHMENTS_S3_BUCKET}
         CorsConfiguration:
           CorsRules:
             -

@@ -1,11 +1,9 @@
 import 'source-map-support/register'
-import * as AWS  from 'aws-sdk'
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
-import * as AWSXRay from 'aws-xray-sdk'
 import {getUploadUrl} from '../../businessLogic/todos'
 
 
-const XAWS = AWSXRay.captureAWS(AWS)
+
 
 
 
