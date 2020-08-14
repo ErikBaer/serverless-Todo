@@ -23,18 +23,14 @@ provider:
 
 
 custom:
-  serverless-offline:
-    port: 3003
 
-  s3:
-    host: localhost
-    directory: /tmp
+
+  
 
   dynamodb:
     stages:
       - ${self:provider.stage}
     start:
-      port: 8000
       inMemory: true
       migrate: true 
 
@@ -60,7 +56,7 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:Query
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: "*"
 
   # TODO: Configure this function
   CreateTodo:
@@ -71,6 +67,11 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Put
+        Resource: "*"
     
 
   # TODO: Configure this function
@@ -82,7 +83,11 @@ functions:
           path: todos/{todoId}
           cors: true
           authorizer: Auth
-
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Update
+        Resource: "*"
   # TODO: Configure this function
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
@@ -92,6 +97,11 @@ functions:
           path: todos/{todoId}
           cors: true
           authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Delete
+        Resource: "*"
 
   # TODO: Configure this function
   GenerateUploadUrl:
@@ -102,6 +112,11 @@ functions:
           path: todos/{todoId}/attachment
           cors: true
           authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: "*"
 
   
 
